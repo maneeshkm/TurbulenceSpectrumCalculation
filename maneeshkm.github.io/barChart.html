@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<h1>AAP donations</h1>
+<body bgcolor="#E6E6FA">
+
+<style>
+
+body {
+  font-family: sans-serif;
+  position: relative;
+  width: 960px;
+  bgcolor="#E6E6FA"
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+  fill-opacity: .8;
+}
+
+.bar:hover {
+  fill: orangered ;
+}
+
+.x.axis path {
+  display: none;
+}
+
+rect.highlight {
+    fill: purple;
+}
+
+label {
+  position: absolute;
+  top: 10px;
+  right: -100px;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.6);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+</style>
+<label><input type="checkbox"> Sort values</label>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.min.js"></script>
+
+<script>
+
+
+var margin = {top: 30, right: 20, bottom: 70, left: 100},
+    width = 1300 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+//var formatPercent = d3.format(".0%");
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width],0.1,1);
+
+
+var y = d3.scale.linear()
+    .range([height,0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var insertLinebreaks = function (t, d, width) {
+    var el = d3.select(t);
+    var p = d3.select(t.parentNode);
+    p.append("foreignObject")
+        .attr('x', -width/2)
+        .attr("width", width)
+        .attr("height", 200)
+      .append("xhtml:p")
+        .attr('style','word-wrap: break-word; text-align:center;')
+        .html(d);    
+
+    el.remove();
+
+};
+
+d3.json("districtData.json", function(error, data) {
+  console.log(data)
+  data.forEach(function(d) {
+    d.total = +d.total;
+  });
+
+  x.domain(data.map(function(d) { return d.states; }));
+  y.domain([0, d3.max(data, function(d) { return d.total; })]);
+
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Total Amount");
+
+
+svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .attr("font-size","9px")
+      .call(xAxis)
+      .selectAll("text")
+      .each(function(d,i){ insertLinebreaks(this, d, x.rangeBand()*1.1 ); });
+      //.call(wrap, x.rangeBand());
+	  
+	  
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-5, 0])
+  .html(function(d) {
+    return "<strong>" + d.states + ": </strong> <span style='color:green'> INR " + numberWithCommas(d.total) + "</span>";
+  })
+  
+  svg.call(tip);
+  
+  
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.states); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.total); })
+      .attr("height", function(d) { return  height-y(d.total); })
+	  .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
+
+  d3.select("input").on("change", change);
+
+  d3.select('#xaxis')
+    .selectAll('text')
+        .each(function(d,i){ insertLinebreaks(this, d, x1.rangeBand() ); });
+
+  var sortTimeout = setTimeout(function() {
+    d3.select("input").property("checked", true).each(change);
+  }, 2000);
+
+  function change() {
+    clearTimeout(sortTimeout);
+
+    // Copy-on-write since tweens are evaluated after a delay.
+    var x0 = x.domain(data.sort(this.checked
+        ? function(a, b) { return b.total - a.total; }
+        : function(a, b) { return d3.ascending(a.states, b.states); })
+        .map(function(d) { return d.states; }))
+        .copy();
+
+    var transition = svg.transition().duration(750),
+        delay = function(d, i) { return i * 50; };
+
+    transition.selectAll(".bar")
+        .delay(delay)
+        .attr("x", function(d) { return x0(d.states); });
+
+    transition.select(".x.axis")
+        .call(xAxis.orient('bottom'))
+      .selectAll("g")
+        .delay(delay)
+    
+  }
+});
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
+function wrap(text, width) {
+  text.each(function() {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+    while (word = words.pop()) {
+      line.push(word);
+      tspan.text(line.join(" "));
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop();
+        tspan.text(line.join(" "));
+        line = [word];
+        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+      }
+    }
+  });
+}
+
+
+</script>

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AAP donations from India</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+//head script injection
+</script>
+    <style>
+      html, body, #map_canvas {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+	  /* your custom CSS \*/
+	@-moz-keyframes pulsate {
+		from {
+			-moz-transform: scale(0.25);
+			opacity: 1.0;
+		}
+		95% {
+			-moz-transform: scale(1.3);
+			opacity: 0;
+		}
+		to {
+			-moz-transform: scale(0.3);
+			opacity: 0;
+		}
+	}
+	@-webkit-keyframes pulsate {
+		from {
+			-webkit-transform: scale(0.25);
+			opacity: 1.0;
+		}
+		95% {
+			-webkit-transform: scale(1.3);
+			opacity: 0;
+		}
+		to {
+			-webkit-transform: scale(0.3);
+			opacity: 0;
+		}
+	}
+	/* get the container that's just outside the marker image, 
+		which just happens to have our Marker title in it */
+	#map_canvas div.gmnoprint[title="I might be here"] {
+		-moz-animation: pulsate 1.5s ease-in-out infinite;
+		-webkit-animation: pulsate 1.5s ease-in-out infinite;
+		border:1pt solid #fff;
+		/* make a circle */
+		-moz-border-radius:51px;
+		-webkit-border-radius:51px;
+		border-radius:51px;
+		/* multiply the shadows, inside and outside the circle */
+		-moz-box-shadow:inset 0 0 5px #06f, inset 0 0 5px #06f, inset 0 0 5px #06f, 0 0 5px #06f, 0 0 5px #06f, 0 0 5px #06f;
+		-webkit-box-shadow:inset 0 0 5px #06f, inset 0 0 5px #06f, inset 0 0 5px #06f, 0 0 5px #06f, 0 0 5px #06f, 0 0 5px #06f;
+		box-shadow:inset 0 0 5px #06f, inset 0 0 5px #06f, inset 0 0 5px #06f, 0 0 5px #06f, 0 0 5px #06f, 0 0 5px #06f;
+		/* set the ring's new dimension and re-center it */
+		height:51px!important;
+		margin:-18px 0 0 -18px;
+		width:51px!important;
+	}
+	/* hide the superfluous marker image since it would expand and shrink with its containing element */
+/*	#map_canvas div[style*="987654"][title] img {*/
+	#map_canvas div.gmnoprint[title="I might be here"] img {
+		display:none;
+	}
+	/* compensate for iPhone and Android devices with high DPI, add iPad media query */
+	@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (device-width: 768px) {
+		#map_canvas div.gmnoprint[title="I might be here"] {
+			margin:-10px 0 0 -10px;
+		}
+	}
+
+</style>
+<!-- access to the HEAD element -->
+<script type="text/javascript">
+//alert('');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+<title>Google Maps JavaScript API v3 Example: Map Simple</title>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript">
+//head script injection
+</script>
+</style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+    <script>
+
+//     var r = $.getJSON("out.json", function(json) {
+//     console.log(json); // this will show the info it in firebug console
+//     console.log(r.responseJSON.length)
+// });
+
+
+// var r = $.getJSON("out.json");
+// var r = [];
+// $.each(s.results.bindings, function(i, obj) {
+//     r.push([obj.lat.value, obj.lng.value, obj.district.value]);
+// });
+
+
+//google.maps.visualRefresh = true;
+var r = [{"lat": " 7.0346281 " , "lng": " 93.7841503 " , "district": " NICOBAR " } ,
+{"lat": " 7.0346281 " , "lng": " 93.7841503 " , "district": " NORTH & MIDDLE ANDAMAN " } ,
+{"lat": " 11.8311681 " , "lng": " 92.6586401 " , "district": " SOUTH ANDAMAN " } ,
+{"lat": " 19.6667 " , "lng": " 78.5333 " , "district": " ADILABAD " } ,
+{"lat": " 14.6707094 " , "lng": " 77.5907443 " , "district": " ANANTAPUR " } ,
+{"lat": " 13.2170963 " , "lng": " 79.1006738 " , "district": " CHITTOOR " } ,
+{"lat": " 17.32125 " , "lng": " 82.0407137 " , "district": " EAST GODAVARI " } ,
+{"lat": " 16.3066525 " , "lng": " 80.4365402 " , "district": " GUNTUR " } ,
+{"lat": " 17.385044 " , "lng": " 78.486671 " , "district": " HYDERABAD " } ,
+{"lat": " 18.4385553 " , "lng": " 79.1288412 " , "district": " KARIMNAGAR " } ,
+{"lat": " 17.2472528 " , "lng": " 80.1514447 " , "district": " KHAMMAM " } ,
+{"lat": " 16.1667 " , "lng": " 81.1333 " , "district": " KRISHNA " } ,
+{"lat": " 15.8281257 " , "lng": " 78.0372792 " , "district": " KURNOOL " } ,
+{"lat": " 16.7416379 " , "lng": " 77.985961 " , "district": " MAHBUBNAGAR " } ,
+{"lat": " 18.05514 " , "lng": " 78.276031 " , "district": " MEDAK " } ,
+{"lat": " 17.052389 " , "lng": " 79.2671809 " , "district": " NALGONDA " } ,
+{"lat": " 18.6725047 " , "lng": " 78.0940867 " , "district": " NIZAMABAD " } ,
+{"lat": " 15.7187931 " , "lng": " 79.560344 " , "district": " PRAKASAM " } ,
+{"lat": " 17.2031945 " , "lng": " 77.8367282 " , "district": " RANGAREDDY " } ,
+{"lat": " 14.4425987 " , "lng": " 79.986456 " , "district": " SRI POTTI SRIRAMULU NELLORE " } ,
+{"lat": " 18.3 " , "lng": " 83.9 " , "district": " SRIKAKULAM " } ,
+{"lat": " 17.6868159 " , "lng": " 83.2184815 " , "district": " VISAKHAPATNAM " } ,
+{"lat": " 18.1066576 " , "lng": " 83.3955506 " , "district": " VIZIANAGARAM " } ,
+{"lat": " 18.000055 " , "lng": " 79.588167 " , "district": " WARANGAL " } ,
+{"lat": " 16.43 " , "lng": " 81.09 " , "district": " WEST GODAVARI " } ,
+{"lat": " 17.0477624 " , "lng": " 80.0981869 " , "district": " Y. S. R. " } ,
+{"lat": " 28.1097051 " , "lng": " 95.1432068 " , "district": " EAST SIANG " } ,
+{"lat": " 27.1719019 " , "lng": " 93.7029002 " , "district": " PAPUM PARE " } ,
+{"lat": " 26.9942703 " , "lng": " 95.5407299 " , "district": " TIRAP " } ,
+{"lat": " 28.147254 " , "lng": " 94.7484518 " , "district": " WEST SIANG " } ,
+{"lat": " 26.6621472 " , "lng": " 91.3577749 " , "district": " BAKSA " } ,
+{"lat": " 26.3301026 " , "lng": " 91.0322845 " , "district": " BARPETA " } ,
+{"lat": " 26.474217 " , "lng": " 90.564452 " , "district": " BONGAIGAON " } ,
+{"lat": " 24.7821253 " , "lng": " 92.8577105 " , "district": " CACHAR " } ,
+{"lat": " 26.5386619 " , "lng": " 90.6939122 " , "district": " CHIRANG " } ,
+{"lat": " 26.5943518 " , "lng": " 91.9881527 " , "district": " DARRANGGF " } ,
+{"lat": " 27.480511 " , "lng": " 94.549508 " , "district": " DHEMAJI " } ,
+{"lat": " 26.019648 " , "lng": " 89.987751 " , "district": " DHUBRI " } ,
+{"lat": " 27.4728327 " , "lng": " 94.9119621 " , "district": " DIBRUGARH " } ,
+{"lat": " 25.3478004 " , "lng": " 93.0175712 " , "district": " DIMA HASAO " } ,
+{"lat": " 26.1667 " , "lng": " 90.6167 " , "district": " GOALPARA " } ,
+{"lat": " 26.508961 " , "lng": " 93.969543 " , "district": " GOLAGHAT " } ,
+{"lat": " 24.682906 " , "lng": " 92.5641799 " , "district": " HAILAKANDI " } ,
+{"lat": " 26.75602 " , "lng": " 94.20945 " , "district": " JORHAT " } ,
+{"lat": " 26.0802867 " , "lng": " 91.5596117 " , "district": " KAMRUP " } ,
+{"lat": " 26.1852541 " , "lng": " 91.7468905 " , "district": " KAMRUP METROPOLITAN " } ,
+{"lat": " 25.7653667 " , "lng": " 93.1585038 " , "district": " KARBI ANGLONG " } ,
+{"lat": " 24.86434 " , "lng": " 92.357277 " , "district": " KARIMGANJ " } ,
+{"lat": " 26.4014362 " , "lng": " 90.266699 " , "district": " KOKRAJHAR " } ,
+{"lat": " 27.2316353 " , "lng": " 94.0899911 " , "district": " LAKHIMPUR " } ,
+{"lat": " 26.252126 " , "lng": " 92.342377 " , "district": " MORIGAON " } ,
+{"lat": " 26.35037 " , "lng": " 92.6922529 " , "district": " NAGAON " } ,
+{"lat": " 26.442907 " , "lng": " 91.441039 " , "district": " NALBARI " } ,
+{"lat": " 26.9833 " , "lng": " 94.6333 " , "district": " SIVASAGAR " } ,
+{"lat": " 26.7676391 " , "lng": " 92.7785641 " , "district": " SONITPUR " } ,
+{"lat": " 27.489464 " , "lng": " 95.360144 " , "district": " TINSUKIA " } ,
+{"lat": " 26.1346339 " , "lng": " 87.464399 " , "district": " ARARIA " } ,
+{"lat": " 25.2440189 " , "lng": " 84.6662199 " , "district": " ARWAL " } ,
+{"lat": " 24.74839 " , "lng": " 84.3766629 " , "district": " AURANGABAD " } ,
+{"lat": " 24.8833 " , "lng": " 86.9167 " , "district": " BANKA " } ,
+{"lat": " 25.4167 " , "lng": " 86.1333 " , "district": " BEGUSARAI " } ,
+{"lat": " 25.24003 " , "lng": " 86.984512 " , "district": " BHAGALPUR " } ,
+{"lat": " 25.1263166 " , "lng": " 87.0861495 " , "district": " BHOJPUR " } ,
+{"lat": " 25.5647103 " , "lng": " 83.9777482 " , "district": " BUXAR " } ,
+{"lat": " 26.149179 " , "lng": " 85.890587 " , "district": " DARBHANGA " } ,
+{"lat": " 24.7800113 " , "lng": " 84.9818234 " , "district": " GAYA " } ,
+{"lat": " 26.4667 " , "lng": " 84.4333 " , "district": " GOPALGANJ " } ,
+{"lat": " 24.92326 " , "lng": " 86.220238 " , "district": " JAMUI " } ,
+{"lat": " 25.2166667 " , "lng": " 84.9833333 " , "district": " JEHANABAD " } ,
+{"lat": " 25.041734 " , "lng": " 83.61275 " , "district": " KAIMUR (BHABUA) " } ,
+{"lat": " 25.53754 " , "lng": " 87.566093 " , "district": " KATIHAR " } ,
+{"lat": " 25.5111515 " , "lng": " 86.476908 " , "district": " KHAGARIA " } ,
+{"lat": " 26.106235 " , "lng": " 87.956631 " , "district": " KISHANGANJ " } ,
+{"lat": " 25.171709 " , "lng": " 86.103889 " , "district": " LAKHISARAI " } ,
+{"lat": " 25.9169444 " , "lng": " 86.7786111 " , "district": " MADHEPURA " } ,
+{"lat": " 26.3468544 " , "lng": " 86.0715474 " , "district": " MADHUBANI " } ,
+{"lat": " 25.37262 " , "lng": " 86.490321 " , "district": " MUNGER " } ,
+{"lat": " 26.1208876 " , "lng": " 85.3647201 " , "district": " MUZAFFARPUR " } ,
+{"lat": " 25.1240603 " , "lng": " 85.4594749 " , "district": " NALANDA " } ,
+{"lat": " 24.8833 " , "lng": " 85.5333 " , "district": " NAWADA " } ,
+{"lat": " 27.2590444 " , "lng": " 84.0180642 " , "district": " PASHCHIM CHAMPARAN " } ,
+{"lat": " 25.61046 " , "lng": " 85.141667 " , "district": " PATNA " } ,
+{"lat": " 25.78 " , "lng": " 87.47 " , "district": " PURNIA " } ,
+{"lat": " 26.6098139 " , "lng": " 84.8567932 " , "district": " PURVI CHAMPARAN " } ,
+{"lat": " 24.6287405 " , "lng": " 83.9201656 " , "district": " ROHTAS " } ,
+{"lat": " 25.8833 " , "lng": " 86.6 " , "district": " SAHARSA " } ,
+{"lat": " 25.8629679 " , "lng": " 85.7810263 " , "district": " SAMASTIPUR " } ,
+{"lat": " 26.0502233 " , "lng": " 84.6250199 " , "district": " SARAN " } ,
+{"lat": " 25.1416937 " , "lng": " 85.8628915 " , "district": " SHEIKHPURA " } ,
+{"lat": " 26.59807 " , "lng": " 85.495323 " , "district": " SITAMARHI " } ,
+{"lat": " 26.21991 " , "lng": " 84.357964 " , "district": " SIWAN " } ,
+{"lat": " 26.1083333 " , "lng": " 86.6011111 " , "district": " SUPAUL " } ,
+{"lat": " 26.0038178 " , "lng": " 85.0817825 " , "district": " VAISHALI " } ,
+{"lat": " 30.7399738 " , "lng": " 76.7567368 " , "district": " CHANDIGARH " } ,
+{"lat": " 20.73 " , "lng": " 81.2047 " , "district": " BALOD " } ,
+{"lat": " 19.2 " , "lng": " 81.933333 " , "district": " BASTAR " } ,
+{"lat": " 16.82402 " , "lng": " 75.71534 " , "district": " BIJAPUR " } ,
+{"lat": " 31.3454488 " , "lng": " 76.7596221 " , "district": " BILASPUR " } ,
+{"lat": " 18.0532613 " , "lng": " 77.7776361 " , "district": " DAKSHIN BASTAR DANTEWADA " } ,
+{"lat": " 20.7072 " , "lng": " 81.5497 " , "district": " DHAMTARI " } ,
+{"lat": " 21.189367 " , "lng": " 81.283039 " , "district": " DURG " } ,
+{"lat": " 21.9783936 " , "lng": " 82.6483442 " , "district": " JANJGIR-CHAMPA " } ,
+{"lat": " 22.88432 " , "lng": " 84.143527 " , "district": " JASHPUR " } ,
+{"lat": " 21.9099313 " , "lng": " 81.2518833 " , "district": " KABEERDHAM " } ,
+{"lat": " 22.347979 " , "lng": " 82.7004 " , "district": " KORBA " } ,
+{"lat": " 23.5192835 " , "lng": " 82.5080667 " , "district": " KORIYA " } ,
+{"lat": " 21.10718 " , "lng": " 82.0977939 " , "district": " MAHASAMUND " } ,
+{"lat": " 21.895667 " , "lng": " 83.395245 " , "district": " RAIGARH " } ,
+{"lat": " 21.2513844 " , "lng": " 81.6296413 " , "district": " RAIPUR " } ,
+{"lat": " 21.0971034 " , "lng": " 81.0302222 " , "district": " RAJNANDGAON " } ,
+{"lat": " 23.3437983 " , "lng": " 83.1960423 " , "district": " SURGUJA " } ,
+{"lat": " 20.1808672 " , "lng": " 73.0169135 " , "district": " DADRA & NAGAR HAVELI " } ,
+{"lat": " 20.421865 " , "lng": " 72.8736877 " , "district": " DAMAN " } ,
+{"lat": " 28.6493019 " , "lng": " 77.1887747 " , "district": " CENTRAL " } ,
+{"lat": " 28.6425011 " , "lng": " 77.2979782 " , "district": " EAST " } ,
+{"lat": " 28.7483894 " , "lng": " 77.2060241 " , "district": " NORTH " } ,
+{"lat": " 28.7091232 " , "lng": " 77.2749964 " , "district": " NORTH EAST " } ,
+{"lat": " 28.7705774 " , "lng": " 77.0794705 " , "district": " NORTH WEST " } ,
+{"lat": " 28.5086497 " , "lng": " 77.2175223 " , "district": " SOUTH " } ,
+{"lat": " 28.5782932 " , "lng": " 76.9873477 " , "district": " SOUTH WEST " } ,
+{"lat": " 15.5163112 " , "lng": " 73.9830029 " , "district": " NORTH GOA " } ,
+{"lat": " 15.1596785 " , "lng": " 74.07701 " , "district": " SOUTH GOA " } ,
+{"lat": " 23.0395677 " , "lng": " 72.5660045 " , "district": " AHMEDABAD " } ,
+{"lat": " 21.602871 " , "lng": " 71.21817 " , "district": " AMRELI " } ,
+{"lat": " 22.560869 " , "lng": " 72.954773 " , "district": " ANAND " } ,
+{"lat": " 24.3070289 " , "lng": " 72.3514618 " , "district": " BANAS KANTHA " } ,
+{"lat": " 21.7246442 " , "lng": " 73.0022939 " , "district": " BHARUCH " } ,
+{"lat": " 21.7644725 " , "lng": " 72.1519304 " , "district": " BHAVNAGAR " } ,
+{"lat": " 22.8323 " , "lng": " 74.2534639 " , "district": " DOHAD " } ,
+{"lat": " 23.2248196 " , "lng": " 72.6463769 " , "district": " GANDHINAGAR " } ,
+{"lat": " 22.4707019 " , "lng": " 70.05773 " , "district": " JAMNAGAR " } ,
+{"lat": " 21.522184 " , "lng": " 70.4578768 " , "district": " JUNAGADH " } ,
+{"lat": " 23.7337326 " , "lng": " 69.8597406 " , "district": " KACHCHH " } ,
+{"lat": " 22.745977 " , "lng": " 72.681289 " , "district": " KHEDA " } ,
+{"lat": " 23.5879607 " , "lng": " 72.3693252 " , "district": " MAHESANA " } ,
+{"lat": " 21.7511746 " , "lng": " 73.7007088 " , "district": " NARMADA " } ,
+{"lat": " 20.951851 " , "lng": " 72.921463 " , "district": " NAVSARI " } ,
+{"lat": " 22.8208623 " , "lng": " 73.7477857 " , "district": " PANCH MAHALS " } ,
+{"lat": " 23.850809 " , "lng": " 72.114838 " , "district": " PATAN " } ,
+{"lat": " 21.6417069 " , "lng": " 69.6292654 " , "district": " PORBANDAR " } ,
+{"lat": " 22.3038945 " , "lng": " 70.8021599 " , "district": " RAJKOT " } ,
+{"lat": " 23.6843587 " , "lng": " 73.1821623 " , "district": " SABAR KANTHA " } ,
+{"lat": " 21.195 " , "lng": " 72.819444 " , "district": " SURAT " } ,
+{"lat": " 22.6806403 " , "lng": " 71.5946492 " , "district": " SURENDRA NAGAR " } ,
+{"lat": " 22.3073095 " , "lng": " 73.1810976 " , "district": " VADODARA " } ,
+{"lat": " 20.610069 " , "lng": " 72.925858 " , "district": " VALSAD " } ,
+{"lat": " 20.371237 " , "lng": " 72.90634 " , "district": " VAPI " } ,
+{"lat": " 30.3781788 " , "lng": " 76.7766974 " , "district": " AMBALA " } ,
+{"lat": " 28.7990445 " , "lng": " 76.1335112 " , "district": " BHIWANI " } ,
+{"lat": " 28.4089123 " , "lng": " 77.3177894 " , "district": " FARIDABAD " } ,
+{"lat": " 29.513439 " , "lng": " 75.45311 " , "district": " FATEHABAD " } ,
+{"lat": " 28.4594965 " , "lng": " 77.0266383 " , "district": " GURGAON " } ,
+{"lat": " 29.1491875 " , "lng": " 75.7216527 " , "district": " HISAR " } ,
+{"lat": " 28.59886 " , "lng": " 76.654182 " , "district": " JHAJJAR " } ,
+{"lat": " 29.3167 " , "lng": " 76.3167 " , "district": " JIND " } ,
+{"lat": " 29.795441 " , "lng": " 76.399269 " , "district": " KAITHAL " } ,
+{"lat": " 29.6856929 " , "lng": " 76.9904825 " , "district": " KARNAL " } ,
+{"lat": " 29.9695121 " , "lng": " 76.878282 " , "district": " KURUKSHETRA " } ,
+{"lat": " 28.262109 " , "lng": " 76.155627 " , "district": " MAHENDRAGARH " } ,
+{"lat": " 27.9690426 " , "lng": " 77.1024902 " , "district": " MEWAT " } ,
+{"lat": " 17.6521807 " , "lng": " 79.4270754 " , "district": " OTHERS " } ,
+{"lat": " 28.13858 " , "lng": " 77.32914 " , "district": " PALWAL " } ,
+{"lat": " 30.6942091 " , "lng": " 76.860565 " , "district": " PANCHKULA " } ,
+{"lat": " 29.39 " , "lng": " 76.97 " , "district": " PANIPAT " } ,
+{"lat": " 28.18811 " , "lng": " 76.611542 " , "district": " REWARI " } ,
+{"lat": " 28.892361 " , "lng": " 76.59124 " , "district": " ROHTAK " } ,
+{"lat": " 29.5333 " , "lng": " 75.0167 " , "district": " SIRSA " } ,
+{"lat": " 28.9285745 " , "lng": " 77.0914935 " , "district": " SONIPAT " } ,
+{"lat": " 30.132971 " , "lng": " 77.287784 " , "district": " YAMUNANAGAR " } ,
+{"lat": " 31.3454488 " , "lng": " 76.7596221 " , "district": " BILASPUR " } ,
+{"lat": " 32.5533633 " , "lng": " 76.1258083 " , "district": " CHAMBA " } ,
+{"lat": " 25.953449 " , "lng": " 80.146431 " , "district": " HAMIRPUR " } ,
+{"lat": " 32.1 " , "lng": " 76.27 " , "district": " KANGRA " } ,
+{"lat": " 31.6509576 " , "lng": " 78.4751945 " , "district": " KINNAUR " } ,
+{"lat": " 31.957851 " , "lng": " 77.1094597 " , "district": " KULLU " } ,
+{"lat": " 32.4510792 " , "lng": " 77.6979771 " , "district": " LAHUL & SPITI " } ,
+{"lat": " 31.7081655 " , "lng": " 76.9313675 " , "district": " MANDI " } ,
+{"lat": " 31.1046052 " , "lng": " 77.1734242 " , "district": " SHIMLA " } ,
+{"lat": " 30.7258327 " , "lng": " 77.2864879 " , "district": " SIRMAUR " } ,
+{"lat": " 30.90396 " , "lng": " 77.096943 " , "district": " SOLAN " } ,
+{"lat": " 31.468445 " , "lng": " 76.2707745 " , "district": " UNA " } ,
+{"lat": " 34.423415 " , "lng": " 74.642326 " , "district": " BANDIPORE " } ,
+{"lat": " 33.14647 " , "lng": " 75.548867 " , "district": " DODA " } ,
+{"lat": " 32.7266016 " , "lng": " 74.8570259 " , "district": " JAMMU " } ,
+{"lat": " 32.367966 " , "lng": " 75.523478 " , "district": " KATHUA " } ,
+{"lat": " 33.312285 " , "lng": " 75.763367 " , "district": " KISHTAWAR " } ,
+{"lat": " 34.52682 " , "lng": " 74.258639 " , "district": " KUPWARA " } ,
+{"lat": " 33.3716143 " , "lng": " 74.315191 " , "district": " RAJOURI " } ,
+{"lat": " 33.082804 " , "lng": " 74.833314 " , "district": " REASI " } ,
+{"lat": " 32.5530092 " , "lng": " 75.1107527 " , "district": " SAMBA " } ,
+{"lat": " 34.0836581 " , "lng": " 74.7973681 " , "district": " SRINAGAR " } ,
+{"lat": " 32.91893 " , "lng": " 75.131271 " , "district": " UDHAMPUR " } ,
+{"lat": " 23.690791 " , "lng": " 86.113154 " , "district": " BOKARO " } ,
+{"lat": " 24.204235 " , "lng": " 84.870937 " , "district": " CHATRA " } ,
+{"lat": " 24.4833 " , "lng": " 86.7 " , "district": " DEOGHAR " } ,
+{"lat": " 23.7956531 " , "lng": " 86.4303859 " , "district": " DHANBAD " } ,
+{"lat": " 24.2667 " , "lng": " 87.25 " , "district": " DUMKA " } ,
+{"lat": " 24.173149 " , "lng": " 83.808662 " , "district": " GARHWA " } ,
+{"lat": " 24.179741 " , "lng": " 86.302231 " , "district": " GIRIDIH " } ,
+{"lat": " 24.8277778 " , "lng": " 87.2113889 " , "district": " GODDA " } ,
+{"lat": " 23.0474 " , "lng": " 84.54207 " , "district": " GUMLA " } ,
+{"lat": " 23.996 " , "lng": " 85.371017 " , "district": " HAZARIBAGH " } ,
+{"lat": " 23.943871 " , "lng": " 86.83255 " , "district": " JAMTARA " } ,
+{"lat": " 24.468076 " , "lng": " 85.591629 " , "district": " KODERMA " } ,
+{"lat": " 23.7438049 " , "lng": " 84.504337 " , "district": " LATEHAR " } ,
+{"lat": " 23.4333 " , "lng": " 84.6833 " , "district": " LOHARDAGA " } ,
+{"lat": " 24.1286106 " , "lng": " 84.1857115 " , "district": " PALAMU " } ,
+{"lat": " 22.4625369 " , "lng": " 85.520024 " , "district": " PASHCHIMI SINGHBHUM " } ,
+{"lat": " 22.6735219 " , "lng": " 86.3376761 " , "district": " PURBI SINGHBHUM " } ,
+{"lat": " 23.6283333 " , "lng": " 85.5211111 " , "district": " RAMGARH " } ,
+{"lat": " 23.3440997 " , "lng": " 85.309562 " , "district": " RANCHI " } ,
+{"lat": " 25.245118 " , "lng": " 87.634182 " , "district": " SAHIBGANJ " } ,
+{"lat": " 22.8561261 " , "lng": " 86.0121573 " , "district": " SARAIKELA-KHARSAWAN " } ,
+{"lat": " 16.185011 " , "lng": " 75.696243 " , "district": " BAGALKOT " } ,
+{"lat": " 12.9715987 " , "lng": " 77.5945627 " , "district": " BANGALORE " } ,
+{"lat": " 13.1985371 " , "lng": " 77.6994197 " , "district": " BANGALORE RURAL " } ,
+{"lat": " 15.8667 " , "lng": " 74.5 " , "district": " BELGAUM " } ,
+{"lat": " 15.13854 " , "lng": " 76.918732 " , "district": " BELLARY " } ,
+{"lat": " 17.92 " , "lng": " 77.519722 " , "district": " BIDAR " } ,
+{"lat": " 16.82402 " , "lng": " 75.71534 " , "district": " BIJAPUR " } ,
+{"lat": " 11.9261471 " , "lng": " 76.9437312 " , "district": " CHAMRAJNAGAR " } ,
+{"lat": " 13.311821 " , "lng": " 75.770385 " , "district": " CHICKMAGALUR " } ,
+{"lat": " 13.4342 " , "lng": " 77.7242 " , "district": " CHIKKABALLAPUR " } ,
+{"lat": " 14.22209 " , "lng": " 76.40036 " , "district": " CHITRADURGA " } ,
+{"lat": " 12.8437814 " , "lng": " 75.2479061 " , "district": " DAKSHINA KANNADA " } ,
+{"lat": " 14.4663438 " , "lng": " 75.9238397 " , "district": " DAVANGERE " } ,
+{"lat": " 15.45101 " , "lng": " 75.008453 " , "district": " DHARWAD " } ,
+{"lat": " 15.42878 " , "lng": " 75.631279 " , "district": " GADAG " } ,
+{"lat": " 17.329731 " , "lng": " 76.8342957 " , "district": " GULBARGA " } ,
+{"lat": " 13.0068142 " , "lng": " 76.0995519 " , "district": " HASSAN " } ,
+{"lat": " 14.8 " , "lng": " 75.4 " , "district": " HAVERI " } ,
+{"lat": " 12.4244205 " , "lng": " 75.7381856 " , "district": " KODAGU " } ,
+{"lat": " 13.1357446 " , "lng": " 78.1325611 " , "district": " KOLAR " } ,
+{"lat": " 15.3507081 " , "lng": " 76.1554311 " , "district": " KOPPAL " } ,
+{"lat": " 12.5242 " , "lng": " 76.8958 " , "district": " MANDYA " } ,
+{"lat": " 12.2958104 " , "lng": " 76.6393805 " , "district": " MYSORE " } ,
+{"lat": " 16.20702 " , "lng": " 77.354362 " , "district": " RAICHUR " } ,
+{"lat": " 12.71454 " , "lng": " 77.276718 " , "district": " RAMANAGARA " } ,
+{"lat": " 13.9299299 " , "lng": " 75.568101 " , "district": " SHIMOGA " } ,
+{"lat": " 13.34 " , "lng": " 77.1 " , "district": " TUMKUR " } ,
+{"lat": " 13.33232 " , "lng": " 74.746048 " , "district": " UDUPI " } ,
+{"lat": " 14.7092298 " , "lng": " 74.7805192 " , "district": " UTTARA KANNADA " } ,
+{"lat": " 16.764987 " , "lng": " 77.140538 " , "district": " YADGIR " } ,
+{"lat": " 9.4980667 " , "lng": " 76.3388484 " , "district": " ALAPPUZHA " } ,
+{"lat": " 9.98 " , "lng": " 76.28 " , "district": " ERNAKULAM " } ,
+{"lat": " 9.8478859 " , "lng": " 76.9808677 " , "district": " IDUKKI " } ,
+{"lat": " 11.8763372 " , "lng": " 75.375156 " , "district": " KANNUR " } ,
+{"lat": " 12.49247 " , "lng": " 74.990623 " , "district": " KASARAGOD " } ,
+{"lat": " 8.88 " , "lng": " 76.6 " , "district": " KOLLAM " } ,
+{"lat": " 9.5987205 " , "lng": " 76.5288966 " , "district": " KOTTAYAM " } ,
+{"lat": " 11.2587531 " , "lng": " 75.78041 " , "district": " KOZHIKODE " } ,
+{"lat": " 11.0667 " , "lng": " 76.0667 " , "district": " MALAPPURAM " } ,
+{"lat": " 10.7867303 " , "lng": " 76.6547932 " , "district": " PALAKKAD " } ,
+{"lat": " 9.2647582 " , "lng": " 76.7870414 " , "district": " PATHANAMTHITTA " } ,
+{"lat": " 8.4874949 " , "lng": " 76.948623 " , "district": " THIRUVANANTHAPURAM " } ,
+{"lat": " 10.5276416 " , "lng": " 76.2144349 " , "district": " THRISSUR " } ,
+{"lat": " 11.7094457 " , "lng": " 76.095537 " , "district": " WAYANAD " } ,
+{"lat": " 22.3053 " , "lng": " 74.3525 " , "district": " ALIRAJPUR " } ,
+{"lat": " 23.101645 " , "lng": " 81.697937 " , "district": " ANUPPUR " } ,
+{"lat": " 24.5775148 " , "lng": " 77.7318495 " , "district": " ASHOKNAGAR " } ,
+{"lat": " 21.812876 " , "lng": " 80.1838293 " , "district": " BALAGHAT " } ,
+{"lat": " 21.903865 " , "lng": " 77.903453 " , "district": " BETUL " } ,
+{"lat": " 26.5642 " , "lng": " 78.7883 " , "district": " BHIND " } ,
+{"lat": " 23.2599333 " , "lng": " 77.412615 " , "district": " BHOPAL " } ,
+{"lat": " 21.3073729 " , "lng": " 76.230416 " , "district": " BURHANPUR " } ,
+{"lat": " 24.91099 " , "lng": " 79.587784 " , "district": " CHHATARPUR " } ,
+{"lat": " 22.057437 " , "lng": " 78.9381729 " , "district": " CHHINDWARA " } ,
+{"lat": " 23.8380986 " , "lng": " 79.4421731 " , "district": " DAMOH " } ,
+{"lat": " 25.6653262 " , "lng": " 78.4609393 " , "district": " DATIA " } ,
+{"lat": " 22.961227 " , "lng": " 76.051411 " , "district": " DEWAS " } ,
+{"lat": " 22.6 " , "lng": " 75.3 " , "district": " DHAR " } ,
+{"lat": " 22.942639 " , "lng": " 81.075179 " , "district": " DINDORI " } ,
+{"lat": " 24.64488 " , "lng": " 77.310158 " , "district": " GUNA " } ,
+{"lat": " 26.2182871 " , "lng": " 78.1828308 " , "district": " GWALIOR " } ,
+{"lat": " 22.343789 " , "lng": " 77.0959759 " , "district": " HARDA " } ,
+{"lat": " 22.744108 " , "lng": " 77.736967 " , "district": " HOSHANGABAD " } ,
+{"lat": " 22.7195687 " , "lng": " 75.8577258 " , "district": " INDORE " } ,
+{"lat": " 23.1667 " , "lng": " 79.95 " , "district": " JABALPUR " } ,
+{"lat": " 23.836081 " , "lng": " 80.39547 " , "district": " KATNI " } ,
+{"lat": " 22.5979218 " , "lng": " 80.3713855 " , "district": " MANDLA " } ,
+{"lat": " 24.071568 " , "lng": " 75.06693 " , "district": " MANDSOR " } ,
+{"lat": " 26.501257 " , "lng": " 77.993365 " , "district": " MORENA " } ,
+{"lat": " 22.94453 " , "lng": " 79.193916 " , "district": " NARSINGHPUR " } ,
+{"lat": " 24.465285 " , "lng": " 74.871128 " , "district": " NEEMUCH " } ,
+{"lat": " 24.722441 " , "lng": " 80.187115 " , "district": " PANNA " } ,
+{"lat": " 23.330545 " , "lng": " 77.783907 " , "district": " RAISEN " } ,
+{"lat": " 24.0078819 " , "lng": " 76.7278803 " , "district": " RAJGARH " } ,
+{"lat": " 23.330412 " , "lng": " 75.044315 " , "district": " RATLAM " } ,
+{"lat": " 24.5313889 " , "lng": " 81.3011111 " , "district": " REWA " } ,
+{"lat": " 23.832294 " , "lng": " 78.744917 " , "district": " SAGAR " } ,
+{"lat": " 24.5833 " , "lng": " 80.8333 " , "district": " SATNA " } ,
+{"lat": " 23.2 " , "lng": " 77.0833 " , "district": " SEHORE " } ,
+{"lat": " 22.088284 " , "lng": " 79.551864 " , "district": " SEONI " } ,
+{"lat": " 23.3021885 " , "lng": " 81.3568021 " , "district": " SHAHDOL " } ,
+{"lat": " 23.426589 " , "lng": " 76.275573 " , "district": " SHAJAPUR " } ,
+{"lat": " 25.6667 " , "lng": " 76.7 " , "district": " SHEOPUR " } ,
+{"lat": " 25.42329 " , "lng": " 77.653633 " , "district": " SHIVPURI " } ,
+{"lat": " 24.396434 " , "lng": " 81.879841 " , "district": " SIDHI " } ,
+{"lat": " 24.2 " , "lng": " 82.67 " , "district": " SINGRAULI " } ,
+{"lat": " 24.7408333 " , "lng": " 78.8311111 " , "district": " TIKAMGARH " } ,
+{"lat": " 23.1793013 " , "lng": " 75.7849097 " , "district": " UJJAIN " } ,
+{"lat": " 23.406455 " , "lng": " 78.6767477 " , "district": " UMARIYA " } ,
+{"lat": " 23.524019 " , "lng": " 77.8060069 " , "district": " VIDISHA " } ,
+{"lat": " 21.8176815 " , "lng": " 75.8998674 " , "district": " WEST NIMAR " } ,
+{"lat": " 19.0952075 " , "lng": " 74.7495916 " , "district": " AHMEDNAGAR " } ,
+{"lat": " 20.70388 " , "lng": " 76.997093 " , "district": " AKOLA " } ,
+{"lat": " 20.930679 " , "lng": " 77.758713 " , "district": " AMRAVATI " } ,
+{"lat": " 24.74839 " , "lng": " 84.3766629 " , "district": " AURANGABAD " } ,
+{"lat": " 18.9833 " , "lng": " 75.7667 " , "district": " BEED " } ,
+{"lat": " 21.170519 " , "lng": " 79.664692 " , "district": " BHANDARA " } ,
+{"lat": " 20.532949 " , "lng": " 76.184303 " , "district": " BULDANA " } ,
+{"lat": " 19.95 " , "lng": " 79.3 " , "district": " CHANDRAPUR " } ,
+{"lat": " 20.9042201 " , "lng": " 74.7748979 " , "district": " DHULE " } ,
+{"lat": " 20.1824052 " , "lng": " 80.0031833 " , "district": " GADCHIROLI " } ,
+{"lat": " 21.45985 " , "lng": " 80.198181 " , "district": " GONDIA " } ,
+{"lat": " 21.013321 " , "lng": " 75.563972 " , "district": " JALGAON " } ,
+{"lat": " 19.838949 " , "lng": " 75.887177 " , "district": " JALNA " } ,
+{"lat": " 16.6913076 " , "lng": " 74.2448662 " , "district": " KOLHAPUR " } ,
+{"lat": " 18.39768 " , "lng": " 76.580971 " , "district": " LATUR " } ,
+{"lat": " 19.0759837 " , "lng": " 72.8776559 " , "district": " MUMBAI " } ,
+{"lat": " 19.1538231 " , "lng": " 72.8751786 " , "district": " MUMBAI SUBURBAN " } ,
+{"lat": " 21.1458004 " , "lng": " 79.0881546 " , "district": " NAGPUR " } ,
+{"lat": " 19.153061 " , "lng": " 77.305847 " , "district": " NANDED " } ,
+{"lat": " 21.3755507 " , "lng": " 74.2427644 " , "district": " NANDURBAR " } ,
+{"lat": " 19.9974533 " , "lng": " 73.7898023 " , "district": " NASHIK " } ,
+{"lat": " 18.1860659 " , "lng": " 76.0419409 " , "district": " OSMANABAD " } ,
+{"lat": " 19.2667 " , "lng": " 76.7833 " , "district": " PARBHANI " } ,
+{"lat": " 18.5204303 " , "lng": " 73.8567437 " , "district": " PUNE " } ,
+{"lat": " 18.5157519 " , "lng": " 73.1821623 " , "district": " RAIGAD " } ,
+{"lat": " 16.990215 " , "lng": " 73.3120233 " , "district": " RATNAGIRI " } ,
+{"lat": " 16.85438 " , "lng": " 74.564171 " , "district": " SANGLI " } ,
+{"lat": " 17.691401 " , "lng": " 74.000938 " , "district": " SATARA " } ,
+{"lat": " 16.1816208 " , "lng": " 73.7477857 " , "district": " SINDHUDURG " } ,
+{"lat": " 17.6599188 " , "lng": " 75.9063906 " , "district": " SOLAPUR " } ,
+{"lat": " 19.2183307 " , "lng": " 72.9780897 " , "district": " THANE " } ,
+{"lat": " 20.745319 " , "lng": " 78.6021946 " , "district": " WARDHA " } ,
+{"lat": " 20.09907 " , "lng": " 77.136703 " , "district": " WASHIM " } ,
+{"lat": " 20.3887937 " , "lng": " 78.1204073 " , "district": " YAVATMAL " } ,
+{"lat": " 24.6288644 " , "lng": " 93.7612856 " , "district": " BISHNUPUR " } ,
+{"lat": " 24.8269714 " , "lng": " 94.0082563 " , "district": " IMPHAL EAST " } ,
+{"lat": " 24.7827837 " , "lng": " 93.8858955 " , "district": " IMPHAL WEST " } ,
+{"lat": " 24.9879342 " , "lng": " 93.495292 " , "district": " TAMENGLONG " } ,
+{"lat": " 24.6523299 " , "lng": " 93.9908335 " , "district": " THOUBAL " } ,
+{"lat": " 25.3681768 " , "lng": " 91.7538817 " , "district": " EAST KHASI HILLS " } ,
+{"lat": " 25.3333333 " , "lng": " 92.6666667 " , "district": " JAINTIA HILLS " } ,
+{"lat": " 25.5624625 " , "lng": " 91.2891036 " , "district": " WEST KHASI HILLS " } ,
+{"lat": " 23.727107 " , "lng": " 92.7176389 " , "district": " AIZAWL " } ,
+{"lat": " 24.231124 " , "lng": " 92.675639 " , "district": " KOLASIB " } ,
+{"lat": " 25.906267 " , "lng": " 93.72759 " , "district": " DIMAPUR " } ,
+{"lat": " 25.67035 " , "lng": " 94.109515 " , "district": " KOHIMA " } ,
+{"lat": " 26.318609 " , "lng": " 94.512108 " , "district": " MOKOKCHUNG " } ,
+{"lat": " 20.85 " , "lng": " 85.1 " , "district": " ANGUL " } ,
+{"lat": " 20.7167 " , "lng": " 83.4833 " , "district": " BALANGIR " } ,
+{"lat": " 21.4949767 " , "lng": " 86.942658 " , "district": " BALASORE " } ,
+{"lat": " 21.4949767 " , "lng": " 86.942658 " , "district": " BALESHWAR " } ,
+{"lat": " 21.2550301 " , "lng": " 83.5070203 " , "district": " BARAGARH " } ,
+{"lat": " 20.8333 " , "lng": " 84.3167 " , "district": " BAUDH " } ,
+{"lat": " 21.0582737 " , "lng": " 86.4958396 " , "district": " BHADRAK " } ,
+{"lat": " 20.2960587 " , "lng": " 85.8245398 " , "district": " BHUBANESWAR " } ,
+{"lat": " 20.462521 " , "lng": " 85.8829895 " , "district": " CUTTACK " } ,
+{"lat": " 21.5333 " , "lng": " 84.7333 " , "district": " DEBAGARH " } ,
+{"lat": " 20.65616 " , "lng": " 85.604263 " , "district": " DHENKANAL " } ,
+{"lat": " 19.1912221 " , "lng": " 84.1857115 " , "district": " GAJAPATI " } ,
+{"lat": " 19.384291 " , "lng": " 85.056358 " , "district": " GANJAM " } ,
+{"lat": " 20.2548998 " , "lng": " 86.1706221 " , "district": " JAGATSINGHPUR " } ,
+{"lat": " 20.85 " , "lng": " 86.3333 " , "district": " JAJAPUR " } ,
+{"lat": " 21.860243 " , "lng": " 84.015518 " , "district": " JHARSUGUDA " } ,
+{"lat": " 20.1032985 " , "lng": " 83.1649001 " , "district": " KALAHANDI " } ,
+{"lat": " 20.1342042 " , "lng": " 84.0167423 " , "district": " KANDHAMAL " } ,
+{"lat": " 20.5 " , "lng": " 86.4167 " , "district": " KENDARAPARA " } ,
+{"lat": " 21.6333 " , "lng": " 85.5833 " , "district": " KENDUJHAR " } ,
+{"lat": " 20.18564 " , "lng": " 85.627296 " , "district": " KHORDHA " } ,
+{"lat": " 18.813487 " , "lng": " 82.7123327 " , "district": " KORAPUT " } ,
+{"lat": " 18.363526 " , "lng": " 81.895253 " , "district": " MALKANGIRI " } ,
+{"lat": " 21.925365 " , "lng": " 86.7359551 " , "district": " MAYURBHANJ " } ,
+{"lat": " 19.6892919 " , "lng": " 82.3017728 " , "district": " NABARANGPUR " } ,
+{"lat": " 20.1231332 " , "lng": " 85.1038426 " , "district": " NAYAGARH " } ,
+{"lat": " 20.8167 " , "lng": " 82.5333 " , "district": " NUAPADA " } ,
+{"lat": " 19.8133822 " , "lng": " 85.8314655 " , "district": " PURI " } ,
+{"lat": " 19.1667 " , "lng": " 83.4167 " , "district": " RAYAGADA " } ,
+{"lat": " 21.4662219 " , "lng": " 83.975164 " , "district": " SAMBALPUR " } ,
+{"lat": " 20.8480141 " , "lng": " 83.8950042 " , "district": " SONEPUR " } ,
+{"lat": " 20.9338113 " , "lng": " 83.804868 " , "district": " SUBARNAPUR " } ,
+{"lat": " 22.1167 " , "lng": " 84.0333 " , "district": " SUNDERGARH " } ,
+{"lat": " 10.9254398 " , "lng": " 79.8380056 " , "district": " KARAIKAL " } ,
+{"lat": " 11.9138598 " , "lng": " 79.8144722 " , "district": " PUDUCHERRY " } ,
+{"lat": " 16.732809 " , "lng": " 82.2168499 " , "district": " YANAM " } ,
+{"lat": " 31.6339793 " , "lng": " 74.8722642 " , "district": " AMRITSAR " } ,
+{"lat": " 30.37964 " , "lng": " 75.546121 " , "district": " BARNALA " } ,
+{"lat": " 30.210994 " , "lng": " 74.9454745 " , "district": " BATHINDA " } ,
+{"lat": " 30.6667 " , "lng": " 74.75 " , "district": " FARIDKOT " } ,
+{"lat": " 30.6456 " , "lng": " 76.3825 " , "district": " FATEHGARH SAHIB " } ,
+{"lat": " 30.9181 " , "lng": " 74.616142 " , "district": " FEROZEPUR " } ,
+{"lat": " 32.033852 " , "lng": " 75.407127 " , "district": " GURDASPUR " } ,
+{"lat": " 31.527981 " , "lng": " 75.9137499 " , "district": " HOSHIARPUR " } ,
+{"lat": " 31.3260152 " , "lng": " 75.5761829 " , "district": " JALANDHAR " } ,
+{"lat": " 31.37492 " , "lng": " 75.384216 " , "district": " KAPURTHALA " } ,
+{"lat": " 30.900965 " , "lng": " 75.8572758 " , "district": " LUDHIANA " } ,
+{"lat": " 29.9833 " , "lng": " 75.3833 " , "district": " MANSA " } ,
+{"lat": " 30.8164603 " , "lng": " 75.1717093 " , "district": " MOGA " } ,
+{"lat": " 30.7046486 " , "lng": " 76.7178726 " , "district": " MOHALI " } ,
+{"lat": " 30.468439 " , "lng": " 74.517479 " , "district": " MUKTSAR " } ,
+{"lat": " 30.32062 " , "lng": " 76.395126 " , "district": " PATIALA " } ,
+{"lat": " 30.9659168 " , "lng": " 76.5230234 " , "district": " ROPAR " } ,
+{"lat": " 30.9659168 " , "lng": " 76.5230234 " , "district": " RUPNAGAR " } ,
+{"lat": " 30.7046486 " , "lng": " 76.7178726 " , "district": " SAHIBZADA AJIT SINGH NAGAR " } ,
+{"lat": " 30.2457963 " , "lng": " 75.8420716 " , "district": " SANGRUR " } ,
+{"lat": " 31.1014636 " , "lng": " 76.1319953 " , "district": " SHAHID BHAGAT SINGH NAGAR " } ,
+{"lat": " 31.45 " , "lng": " 74.9253 " , "district": " TARN TARAN " } ,
+{"lat": " 26.45 " , "lng": " 74.64 " , "district": " AJMER " } ,
+{"lat": " 27.5609324 " , "lng": " 76.6250168 " , "district": " ALWAR " } ,
+{"lat": " 23.540541 " , "lng": " 74.4422529 " , "district": " BANSWARA " } ,
+{"lat": " 25.094641 " , "lng": " 76.509422 " , "district": " BARAN " } ,
+{"lat": " 25.75 " , "lng": " 71.3833 " , "district": " BARMER " } ,
+{"lat": " 27.215599 " , "lng": " 77.49015 " , "district": " BHARATPUR " } ,
+{"lat": " 25.346251 " , "lng": " 74.636383 " , "district": " BHILWARA " } ,
+{"lat": " 28.01989 " , "lng": " 73.317551 " , "district": " BIKANER " } ,
+{"lat": " 25.43815 " , "lng": " 75.637306 " , "district": " BUNDI " } ,
+{"lat": " 24.8887435 " , "lng": " 74.6269216 " , "district": " CHITTAURGARH " } ,
+{"lat": " 28.3 " , "lng": " 74.95 " , "district": " CHURU " } ,
+{"lat": " 26.88859 " , "lng": " 76.335907 " , "district": " DAUSA " } ,
+{"lat": " 26.691311 " , "lng": " 77.879723 " , "district": " DHOLPUR " } ,
+{"lat": " 23.841668 " , "lng": " 73.7146623 " , "district": " DUNGARPUR " } ,
+{"lat": " 29.9167 " , "lng": " 73.8833 " , "district": " GANGANAGAR " } ,
+{"lat": " 29.61775 " , "lng": " 74.289017 " , "district": " HANUMANGARH " } ,
+{"lat": " 26.9124165 " , "lng": " 75.7872879 " , "district": " JAIPUR " } ,
+{"lat": " 26.9157487 " , "lng": " 70.9083443 " , "district": " JAISALMER " } ,
+{"lat": " 25.34399 " , "lng": " 72.615753 " , "district": " JALORE " } ,
+{"lat": " 24.587999 " , "lng": " 76.157578 " , "district": " JHALAWAR " } ,
+{"lat": " 28.124203 " , "lng": " 75.398318 " , "district": " JHUNJHUNU " } ,
+{"lat": " 26.2389469 " , "lng": " 73.0243094 " , "district": " JODHPUR " } ,
+{"lat": " 26.49682 " , "lng": " 77.027603 " , "district": " KARAULI " } ,
+{"lat": " 25.1695114 " , "lng": " 75.8539898 " , "district": " KOTA " } ,
+{"lat": " 27.1991222 " , "lng": " 73.740924 " , "district": " NAGAUR " } ,
+{"lat": " 25.7710893 " , "lng": " 73.3234478 " , "district": " PALI " } ,
+{"lat": " 25.892187 " , "lng": " 81.93311 " , "district": " PRATAPGARH " } ,
+{"lat": " 25.0667 " , "lng": " 73.8833 " , "district": " RAJSAMAND " } ,
+{"lat": " 26.020309 " , "lng": " 76.344299 " , "district": " SAWAI MADHOPUR " } ,
+{"lat": " 27.6094 " , "lng": " 75.139911 " , "district": " SIKAR " } ,
+{"lat": " 24.886909 " , "lng": " 72.847633 " , "district": " SIROHI " } ,
+{"lat": " 26.1667 " , "lng": " 75.7833 " , "district": " TONK " } ,
+{"lat": " 24.5712699 " , "lng": " 73.6915439 " , "district": " UDAIPUR " } ,
+{"lat": " 26.928696 " , "lng": " 88.362785 " , "district": " EAST DISTRICT " } ,
+{"lat": " 26.928696 " , "lng": " 88.362785 " , "district": " SOUTH DISTRICT " } ,
+{"lat": " 26.928696 " , "lng": " 88.362785 " , "district": " WEST DISTRICT " } ,
+{"lat": " 11.13704 " , "lng": " 79.075821 " , "district": " ARIYALUR " } ,
+{"lat": " 13.0524139 " , "lng": " 80.2508246 " , "district": " CHENNAI " } ,
+{"lat": " 11.0168445 " , "lng": " 76.9558321 " , "district": " COIMBATORE " } ,
+{"lat": " 11.749574 " , "lng": " 79.763822 " , "district": " CUDDALORE " } ,
+{"lat": " 12.1274065 " , "lng": " 78.1580335 " , "district": " DHARMAPURI " } ,
+{"lat": " 10.3673123 " , "lng": " 77.9802906 " , "district": " DINDIGUL " } ,
+{"lat": " 11.342235 " , "lng": " 77.7274769 " , "district": " ERODE " } ,
+{"lat": " 12.8341735 " , "lng": " 79.7036402 " , "district": " KANCHEEPURAM " } ,
+{"lat": " 8.0883064 " , "lng": " 77.5384507 " , "district": " KANNIYAKUMARI " } ,
+{"lat": " 10.957338 " , "lng": " 78.080937 " , "district": " KARUR " } ,
+{"lat": " 12.5186113 " , "lng": " 78.2137365 " , "district": " KRISHNAGIRI " } ,
+{"lat": " 9.9252007 " , "lng": " 78.1197754 " , "district": " MADURAI " } ,
+{"lat": " 10.77 " , "lng": " 79.83 " , "district": " NAGAPATTINAM " } ,
+{"lat": " 11.2194391 " , "lng": " 78.1677236 " , "district": " NAMAKKAL " } ,
+{"lat": " 10.379663 " , "lng": " 78.8208454 " , "district": " PUDUKOTTAI " } ,
+{"lat": " 10.9900136 " , "lng": " 76.9902276 " , "district": " RAMANATHAPURAM " } ,
+{"lat": " 11.664325 " , "lng": " 78.1460142 " , "district": " SALEM " } ,
+{"lat": " 9.845557 " , "lng": " 78.483743 " , "district": " SIVAGANGA " } ,
+{"lat": " 10.7869994 " , "lng": " 79.1378274 " , "district": " THANJAVUR " } ,
+{"lat": " 11.4450257 " , "lng": " 76.6874701 " , "district": " THE NILGIRIS " } ,
+{"lat": " 10.0103658 " , "lng": " 77.4768115 " , "district": " THENI " } ,
+{"lat": " 13.142549 " , "lng": " 79.909053 " , "district": " THIRUVALLUR " } ,
+{"lat": " 10.7713187 " , "lng": " 79.6369974 " , "district": " THIRUVARUR " } ,
+{"lat": " 8.81 " , "lng": " 78.14 " , "district": " THOOTHUKKUDI " } ,
+{"lat": " 10.7904833 " , "lng": " 78.7046725 " , "district": " TIRUCHIRAPPALLI " } ,
+{"lat": " 8.733 " , "lng": " 77.7 " , "district": " TIRUNELVELI " } ,
+{"lat": " 11.1085242 " , "lng": " 77.3410656 " , "district": " TIRUPUR " } ,
+{"lat": " 12.2252841 " , "lng": " 79.0746957 " , "district": " TIRUVANNAMALAI " } ,
+{"lat": " 12.9165167 " , "lng": " 79.1324986 " , "district": " VELLORE " } ,
+{"lat": " 11.939481 " , "lng": " 79.497647 " , "district": " VILLUPURAM " } ,
+{"lat": " 9.583612 " , "lng": " 77.958344 " , "district": " VIRUDHUNAGAR " } ,
+{"lat": " 24.0327426 " , "lng": " 92.2236667 " , "district": " NORTH TRIPURA " } ,
+{"lat": " 23.2789888 " , "lng": " 91.5983959 " , "district": " SOUTH TRIPURA " } ,
+{"lat": " 23.8517476 " , "lng": " 91.443469 " , "district": " WEST TRIPURA " } ,
+{"lat": " 27.1766701 " , "lng": " 78.0080745 " , "district": " AGRA " } ,
+{"lat": " 27.89381 " , "lng": " 78.068138 " , "district": " ALIGARH " } ,
+{"lat": " 25.4358011 " , "lng": " 81.846311 " , "district": " ALLAHABAD " } ,
+{"lat": " 27.807609 " , "lng": " 79.7680243 " , "district": " AMBEDKAR NAGAR " } ,
+{"lat": " 26.75313 " , "lng": " 81.158958 " , "district": " AMETHI " } ,
+{"lat": " 26.4667 " , "lng": " 79.5167 " , "district": " AURAIYA " } ,
+{"lat": " 26.0737044 " , "lng": " 83.1859458 " , "district": " AZAMGARH " } ,
+{"lat": " 28.03368 " , "lng": " 79.120903 " , "district": " BADAUN " } ,
+{"lat": " 28.936473 " , "lng": " 77.217822 " , "district": " BAGHPAT " } ,
+{"lat": " 27.5833 " , "lng": " 81.6 " , "district": " BAHRAICH " } ,
+{"lat": " 25.7584381 " , "lng": " 84.1487319 " , "district": " BALLIA " } ,
+{"lat": " 27.428421 " , "lng": " 82.183138 " , "district": " BALRAMPUR " } ,
+{"lat": " 25.4833 " , "lng": " 80.3333 " , "district": " BANDA " } ,
+{"lat": " 26.927166 " , "lng": " 81.191449 " , "district": " BARABANKI " } ,
+{"lat": " 28.3670355 " , "lng": " 79.4304381 " , "district": " BAREILLY " } ,
+{"lat": " 26.8176796 " , "lng": " 82.7633133 " , "district": " BASTI " } ,
+{"lat": " 29.3724422 " , "lng": " 78.1358472 " , "district": " BIJNOR " } ,
+{"lat": " 28.406963 " , "lng": " 77.8498292 " , "district": " BULANDSHAHR " } ,
+{"lat": " 25.262084 " , "lng": " 83.261212 " , "district": " CHANDAULI " } ,
+{"lat": " 25.1788154 " , "lng": " 80.8654534 " , "district": " CHITRAKOOT " } ,
+{"lat": " 26.5047 " , "lng": " 83.7872 " , "district": " DEORIA " } ,
+{"lat": " 27.557438 " , "lng": " 78.653801 " , "district": " ETAH " } ,
+{"lat": " 26.7793556 " , "lng": " 79.0185723 " , "district": " ETAWAH " } ,
+{"lat": " 26.779347 " , "lng": " 82.142159 " , "district": " FAIZABAD " } ,
+{"lat": " 27.4 " , "lng": " 79.5666667 " , "district": " FARRUKHABAD " } ,
+{"lat": " 25.925683 " , "lng": " 80.814423 " , "district": " FATEHPUR " } ,
+{"lat": " 27.1591006 " , "lng": " 78.3957574 " , "district": " FIROZABAD " } ,
+{"lat": " 28.358983 " , "lng": " 77.550762 " , "district": " GAUTAM BUDDHA NAGAR " } ,
+{"lat": " 28.6691565 " , "lng": " 77.4537578 " , "district": " GHAZIABAD " } ,
+{"lat": " 25.5840419 " , "lng": " 83.5770202 " , "district": " GHAZIPUR " } ,
+{"lat": " 27.1339913 " , "lng": " 81.9618968 " , "district": " GONDA " } ,
+{"lat": " 26.7605545 " , "lng": " 83.3731675 " , "district": " GORAKHPUR " } ,
+{"lat": " 25.953449 " , "lng": " 80.146431 " , "district": " HAMIRPUR " } ,
+{"lat": " 28.7305798 " , "lng": " 77.7758825 " , "district": " HAPUR " } ,
+{"lat": " 27.394647 " , "lng": " 80.129931 " , "district": " HARDOI " } ,
+{"lat": " 26.142269 " , "lng": " 79.333946 " , "district": " JALAUN " } ,
+{"lat": " 25.7490034 " , "lng": " 82.6987002 " , "district": " JAUNPUR " } ,
+{"lat": " 25.444121 " , "lng": " 78.567604 " , "district": " JHANSI " } ,
+{"lat": " 28.8635062 " , "lng": " 78.3387066 " , "district": " JYOTIBA PHULE NAGAR " } ,
+{"lat": " 27.05519 " , "lng": " 79.91808 " , "district": " KANNAUJ " } ,
+{"lat": " 26.1906606 " , "lng": " 79.7740248 " , "district": " KANPUR DEHAT (RAMA BAI NAGAR) " } ,
+{"lat": " 26.4852963 " , "lng": " 80.2305424 " , "district": " KANPUR NAGAR " } ,
+{"lat": " 27.82 " , "lng": " 78.65 " , "district": " KANSHIRAM NAGAR " } ,
+{"lat": " 25.361054 " , "lng": " 81.4031707 " , "district": " KAUSHAMBI " } ,
+{"lat": " 26.7393638 " , "lng": " 83.8900374 " , "district": " KUSHINAGAR " } ,
+{"lat": " 27.9494 " , "lng": " 80.777489 " , "district": " LAKHIMPUR KHERI " } ,
+{"lat": " 24.690815 " , "lng": " 78.417068 " , "district": " LALITPUR " } ,
+{"lat": " 26.8465108 " , "lng": " 80.9466832 " , "district": " LUCKNOW " } ,
+{"lat": " 27.5488018 " , "lng": " 78.0651931 " , "district": " MAHAMAYA NAGAR " } ,
+{"lat": " 27.1446035 " , "lng": " 83.5621737 " , "district": " MAHARAJGANJ " } ,
+{"lat": " 25.288645 " , "lng": " 79.872885 " , "district": " MAHOBA " } ,
+{"lat": " 27.2333 " , "lng": " 79.0167 " , "district": " MAINPURI " } ,
+{"lat": " 27.4924134 " , "lng": " 77.673673 " , "district": " MATHURA " } ,
+{"lat": " 25.9496379 " , "lng": " 83.5586445 " , "district": " MAU " } ,
+{"lat": " 28.9844618 " , "lng": " 77.7064137 " , "district": " MEERUT " } ,
+{"lat": " 25.1336987 " , "lng": " 82.5644344 " , "district": " MIRZAPUR " } ,
+{"lat": " 28.8315925 " , "lng": " 78.7782764 " , "district": " MORADABAD " } ,
+{"lat": " 29.4726817 " , "lng": " 77.7085091 " , "district": " MUZAFFARNAGAR " } ,
+{"lat": " 28.632178 " , "lng": " 79.802987 " , "district": " PILIBHIT " } ,
+{"lat": " 25.892187 " , "lng": " 81.93311 " , "district": " PRATAPGARH " } ,
+{"lat": " 26.2333183 " , "lng": " 81.2333123 " , "district": " RAE BARELI " } ,
+{"lat": " 28.802957 " , "lng": " 79.0254439 " , "district": " RAMPUR " } ,
+{"lat": " 29.9667 " , "lng": " 77.55 " , "district": " SAHARANPUR " } ,
+{"lat": " 26.7344223 " , "lng": " 83.146138 " , "district": " SANT KABIR NAGAR " } ,
+{"lat": " 25.3932499 " , "lng": " 82.565788 " , "district": " SANT RAVIDAS NAGAR (BHADOHI) " } ,
+{"lat": " 27.8833 " , "lng": " 79.9167 " , "district": " SHAHJAHANPUR " } ,
+{"lat": " 27.72989 " , "lng": " 81.8224362 " , "district": " SHRAVASTI " } ,
+{"lat": " 24.5823103 " , "lng": " 80.847466 " , "district": " SIDDHARTH NAGAR " } ,
+{"lat": " 27.5667 " , "lng": " 80.6833 " , "district": " SITAPUR " } ,
+{"lat": " 24.464881 " , "lng": " 83.1649001 " , "district": " SONBHADRA " } ,
+{"lat": " 26.2647757 " , "lng": " 82.0727061 " , "district": " SULTANPUR " } ,
+{"lat": " 26.548051 " , "lng": " 80.484606 " , "district": " UNNAO " } ,
+{"lat": " 25.3176452 " , "lng": " 82.9739144 " , "district": " VARANASI " } ,
+{"lat": " 29.59836 " , "lng": " 79.6615118 " , "district": " ALMORA " } ,
+{"lat": " 29.8394753 " , "lng": " 79.7764337 " , "district": " BAGESHWAR " } ,
+{"lat": " 30.4041045 " , "lng": " 79.3317691 " , "district": " CHAMOLI " } ,
+{"lat": " 29.3360974 " , "lng": " 80.0910275 " , "district": " CHAMPAWAT " } ,
+{"lat": " 30.3164945 " , "lng": " 78.0321918 " , "district": " DEHRA DUN " } ,
+{"lat": " 30.3848782 " , "lng": " 78.4227106 " , "district": " GARHWAL " } ,
+{"lat": " 29.9456906 " , "lng": " 78.1642478 " , "district": " HARIDWAR " } ,
+{"lat": " 29.3803039 " , "lng": " 79.4635658 " , "district": " NANITAL " } ,
+{"lat": " 29.5828604 " , "lng": " 80.2181884 " , "district": " PITHORAGARH " } ,
+{"lat": " 30.285067 " , "lng": " 78.982915 " , "district": " RUDRAPRAYAG " } ,
+{"lat": " 30.3848782 " , "lng": " 78.4227106 " , "district": " TEHRI GARHWAL " } ,
+{"lat": " 28.9609653 " , "lng": " 79.5153773 " , "district": " UDHAM SINGH NAGAR " } ,
+{"lat": " 30.733299 " , "lng": " 78.439903 " , "district": " UTTARKASHI " } ,
+{"lat": " 23.2371632 " , "lng": " 87.0652217 " , "district": " BANKURA " } ,
+{"lat": " 23.23243 " , "lng": " 87.863731 " , "district": " BARDDHAMAN " } ,
+{"lat": " 24.3575023 " , "lng": " 87.8426967 " , "district": " BIRBHUM " } ,
+{"lat": " 25.3729562 " , "lng": " 88.7108964 " , "district": " DAKSHIN DINAJPUR " } ,
+{"lat": " 27.0360066 " , "lng": " 88.2626751 " , "district": " DARJILING " } ,
+{"lat": " 22.5957689 " , "lng": " 88.2636394 " , "district": " HAORA " } ,
+{"lat": " 21.7598677 " , "lng": " 87.7652632 " , "district": " HUGLI " } ,
+{"lat": " 26.52202 " , "lng": " 88.717468 " , "district": " JALPAIGURI " } ,
+{"lat": " 26.32419 " , "lng": " 89.45103 " , "district": " KOCH BIHAR " } ,
+{"lat": " 22.572646 " , "lng": " 88.363895 " , "district": " KOLKATA " } ,
+{"lat": " 25.0557268 " , "lng": " 88.1364591 " , "district": " MALDAH " } ,
+{"lat": " 24.167555 " , "lng": " 88.270819 " , "district": " MURSHIDABAD " } ,
+{"lat": " 22.8903043 " , "lng": " 87.4690648 " , "district": " NADIA " } ,
+{"lat": " 22.710047 " , "lng": " 88.7108964 " , "district": " NORTH TWENTY FOUR PARGANAS " } ,
+{"lat": " 22.4080376 " , "lng": " 87.3810727 " , "district": " PASCHIM MEDINIPUR " } ,
+{"lat": " 21.9372879 " , "lng": " 87.7763333 " , "district": " PURBA MEDINIPUR " } ,
+{"lat": " 23.3320779 " , "lng": " 86.365208 " , "district": " PURULIA " } ,
+{"lat": " 21.8574424 " , "lng": " 88.3717475 " , "district": " SOUTH 24 PARGANAS " } ,
+{"lat": " 25.6140287 " , "lng": " 88.1268795 " , "district": " UTTAR DINAJPUR " } ]
+
+
+var map;
+var image = new google.maps.MarkerImage(
+              'http://plebeosaur.us/etc/map/bluedot_retina.png',
+              null, // size
+              null, // origin
+              new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
+              new google.maps.Size( 17, 17 ) // scaled size (required for Retina display icon)
+            );
+
+function initialize() {
+ // drop();
+  var mapOptions = {
+    zoom: 5,
+    center: new google.maps.LatLng(21.1, 81),
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+  };
+  map = new google.maps.Map(document.getElementById('map_canvas'),
+      mapOptions);
+
+}
+    
+function addMarker(i){
+  //var obj = r[i]; 
+  console.log(i)
+ /* var marker = new google.maps.Marker({
+    map:map,
+    draggable:false,
+    animation: google.maps.Animation.DROP,
+    position: new google.maps.LatLng(parseFloat(i.lat), parseFloat(i.lng)),
+    title: i.district,
+    icon: image,
+	
+    optimized: false,
+  });*/
+  //google.maps.event.addListener(marker, 'click', drop);
+  	myMarker=0
+
+  if ( !myMarker ) {
+						// define our custom marker image
+						var image = new google.maps.MarkerImage(
+							'http://plebeosaur.us/etc/map/bluedot_retina.png',
+							null, // size
+							null, // origin
+							new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
+							new google.maps.Size( 17, 17 ) // scaled size (required for Retina display icon)
+						);
+
+						// then create the new marker
+						myMarker = new google.maps.Marker({
+							flat: true,
+							icon: image,
+							map: map,
+							draggable: false,
+							optimized: false,
+							position: new google.maps.LatLng(parseFloat(i.lat), parseFloat(i.lng)),
+							title: i.district,
+							visible: true,
+							animation: google.maps.Animation.DROP,
+
+						});
+					
+					// just change marker position on subsequent passes
+					} else {
+						myMarker.setPosition( new google.maps.LatLng(parseFloat(i.lat), parseFloat(i.lng)) );
+					}
+
+}
+
+
+function drop() {
+  for (var i = 0; i < r.length; i++) {
+  var m = r[i];
+  (function(n){
+      setTimeout(function() {
+        addMarker(n);
+     }, i * 30);
+   }(m));
+  
+  }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+drop()
+
+    </script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-16332742-2', 'dropboxusercontent.com');
+  ga('send', 'pageview');
+
+</script>
+  </head>
+  <body>
+    <div id="map_canvas"></div>
+
+  </body>
+</html>
